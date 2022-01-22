@@ -80,6 +80,7 @@ struct BiometricsFingerprint : public IBiometricsFingerprint, public IXiaomiFing
     static FingerprintError VendorErrorFilter(int32_t error, int32_t* vendorCode);
     static FingerprintAcquiredInfo VendorAcquiredFilter(int32_t error, int32_t* vendorCode);
     static BiometricsFingerprint* sInstance;
+    int isCancelled = 0;
 
     std::mutex mClientCallbackMutex;
     sp<IBiometricsFingerprintClientCallback> mClientCallback;

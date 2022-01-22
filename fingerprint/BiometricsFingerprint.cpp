@@ -255,6 +255,7 @@ Return<uint64_t> BiometricsFingerprint::getAuthenticatorId() {
 }
 
 Return<RequestStatus> BiometricsFingerprint::cancel() {
+    this->isCancelled = 1;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_OFF);
     return ErrorFilter(mDevice->cancel(mDevice));
 }
@@ -287,6 +288,9 @@ Return<RequestStatus> BiometricsFingerprint::setActiveGroup(uint32_t gid,
 }
 
 Return<RequestStatus> BiometricsFingerprint::authenticate(uint64_t operationId, uint32_t gid) {
+    if (this->isCancelled) {
+        set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_ON);
+    }
     return ErrorFilter(mDevice->authenticate(mDevice, operationId, gid));
 }
 
@@ -476,6 +480,7 @@ Return<void> BiometricsFingerprint::onFingerDown(uint32_t /* x */, uint32_t /* y
 }
 
 Return<void> BiometricsFingerprint::onFingerUp() {
+    this->isCancelled = 0;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_OFF);
     return Void();
 }
