@@ -396,6 +396,7 @@ void BiometricsFingerprint::notify(const fingerprint_msg_t* msg) {
             if (!thisPtr->mClientCallback->onError(devId, result, vendorCode).isOk()) {
                 ALOGE("failed to invoke fingerprint onError callback");
             }
+            getInstance()->onFingerUp();
         } break;
         case FINGERPRINT_ACQUIRED: {
             int32_t vendorCode = 0;
@@ -475,12 +476,12 @@ Return<bool> BiometricsFingerprint::isUdfps(uint32_t /* sensorId */) {
 
 Return<void> BiometricsFingerprint::onFingerDown(uint32_t /* x */, uint32_t /* y */,
                                                 float /* minor */, float /* major */) {
+    this->isCancelled = 0;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_ON);
     return Void();
 }
 
 Return<void> BiometricsFingerprint::onFingerUp() {
-    this->isCancelled = 0;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_OFF);
     return Void();
 }
