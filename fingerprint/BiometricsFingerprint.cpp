@@ -476,12 +476,12 @@ Return<bool> BiometricsFingerprint::isUdfps(uint32_t /* sensorId */) {
 
 Return<void> BiometricsFingerprint::onFingerDown(uint32_t /* x */, uint32_t /* y */,
                                                 float /* minor */, float /* major */) {
-    this->isCancelled = 0;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_ON);
     return Void();
 }
 
 Return<void> BiometricsFingerprint::onFingerUp() {
+    this->isCancelled = 0;
     set(DIMLAYER_HBM_PATH, DIMLAYER_HBM_OFF);
     return Void();
 }
